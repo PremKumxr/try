@@ -5,3 +5,4 @@ matplotlib==3.9.2
 streamlit-option-menu>=0.4.0
 scikit-learn>=1.5.0
 pyserial==3.5
+pickle5==0.0.11
