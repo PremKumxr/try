@@ -242,20 +242,40 @@ if selected == 'Diabetes Prediction':
                     abnormal_params.append("Insulin")
 
                 # Use exactly 8 features for the model
-                model_input = validated_input  # No padding needed
+                model_input = validated_input
 
                 if abnormal_params:
-                    st.success(f"The person is diabetic due to abnormal {', '.join(abnormal_params)} value(s).")
-                    st.write("Abnormal key parameters suggest diabetes. Consult a healthcare provider.")
+                    st.success(f"⚠️ Diabetes Detected Due to Abnormal {', '.join(abnormal_params)} Value(s)")
+                    st.write("""
+                        **Diagnosis**: Your input indicates a high likelihood of diabetes based on abnormal key parameters.
+                        **Next Steps**: 
+                        - **Consult an Endocrinologist**: Schedule an appointment for a comprehensive evaluation and blood tests (e.g., HbA1c).
+                        - **Monitor Symptoms**: Watch for increased thirst, frequent urination, fatigue, or blurred vision.
+                        - **Lifestyle Tips**: Adopt a balanced diet low in refined sugars, engage in regular physical activity (30 min/day), and maintain a healthy weight.
+                        **Possible Complications if Untreated**: Risk of cardiovascular disease, kidney damage, or nerve issues.
+                    """)
                 else:
                     # Use ML model for other parameters
                     diab_prediction = diabetes_model.predict([model_input])
                     if diab_prediction[0] == 1:
-                        st.success('The person is diabetic (ML prediction).')
-                        st.write("ML model predicts diabetes based on other factors. Consult a healthcare provider.")
+                        st.success("⚠️ Diabetes Predicted (Machine Learning Model)")
+                        st.write("""
+                            **Diagnosis**: The ML model indicates a high probability of diabetes based on your input.
+                            **Next Steps**:
+                            - **Consult a Doctor**: Visit a healthcare provider to confirm with tests like fasting glucose or HbA1c.
+                            - **Monitor Risk Factors**: High BMI or family history may increase your risk.
+                            - **Lifestyle Tips**: Focus on a diet rich in fiber, control portion sizes, and exercise regularly to manage blood sugar levels.
+                            **Possible Related Conditions**: Increased risk of heart disease or metabolic syndrome if unmanaged.
+                        """)
                     else:
-                        st.success('The person is not diabetic (ML prediction).')
-                        st.write("Maintain a healthy lifestyle to reduce diabetes risk.")
+                        st.success("✅ No Diabetes Predicted (Machine Learning Model)")
+                        st.write("""
+                            **Diagnosis**: The ML model suggests you are unlikely to have diabetes at this time.
+                            **Next Steps**:
+                            - **Regular Checkups**: Continue monitoring with annual health screenings to catch early signs.
+                            - **Preventive Measures**: Maintain a healthy diet, stay active, and manage stress to lower future risk.
+                            - **Stay Informed**: Be aware of risk factors like obesity or family history that could increase your chances later.
+                        """)
             except Exception as e:
                 st.error(f"An error occurred during prediction: {str(e)}")
 
@@ -275,7 +295,7 @@ if selected == 'Heart Disease Prediction':
     with col1:
         trestbps = st.text_input('Resting Blood Pressure', placeholder="e.g., 120", help="Abnormal: >140 mmHg", value="")
     with col2:
-        chol = st.text_input('Cholesterol', placeholder="e.g., 200", help="Abnormal: >240 mg/dl", value="")
+        chol = st.text_input ('Cholesterol', placeholder="e.g., 200", help="Abnormal: >240 mg/dl", value="")
     with col3:
         fbs = st.text_input('Fasting Blood Sugar', placeholder="1 or 0", help="Used in ML model", value="")
     with col1:
@@ -330,21 +350,47 @@ if selected == 'Heart Disease Prediction':
                     abnormal_params.append("ST Depression")
 
                 # Use exactly 13 features for the model
-                model_input = validated_input  # No padding needed
+                model_input = validated_input
 
                 if abnormal_params:
-                    st.success(f"The person has heart disease due to abnormal {', '.join(abnormal_params)} value(s).")
-                    st.write("Abnormal key parameters suggest heart issues. Consult a cardiologist.")
+                    st.success(f"⚠️ Heart Disease Detected Due to Abnormal {', '.join(abnormal_params)} Value(s)")
+                    st.write("""
+                        **Diagnosis**: Abnormal key parameters suggest a high likelihood of heart disease.
+                        **Next Steps**:
+                        - **Consult a Cardiologist**: Schedule an ECG, stress test, or angiogram for further evaluation.
+                        - **Monitor Symptoms**: Be alert for chest pain, shortness of breath, or fatigue.
+                        - **Lifestyle Tips**: Adopt a heart-healthy diet (low in saturated fats), exercise moderately (30 min/day), and quit smoking.
+                        **Possible Related Conditions**: 
+                        - **Coronary Artery Disease**: Blocked arteries may be indicated by high cholesterol or blood pressure.
+                        - **Arrhythmias**: Abnormal heart rate suggests potential rhythm issues.
+                        - **Heart Failure**: If untreated, heart strain could lead to reduced heart function.
+                    """)
                 else:
                     # Use ML model for other parameters
                     heart_prob = heart_disease_model.predict_proba([model_input])[0][1]
                     heart_prediction = heart_disease_model.predict([model_input])
                     if heart_prediction[0] == 1:
-                        st.success(f'The person has heart disease (ML prediction, Probability: {heart_prob*100:.2f}%).')
-                        st.write("ML model predicts heart disease. Consult a cardiologist.")
+                        st.success(f"⚠️ Heart Disease Predicted (ML Model, Probability: {heart_prob*100:.2f}%)")
+                        st.write("""
+                            **Diagnosis**: The ML model indicates a high probability of heart disease.
+                            **Next Steps**:
+                            - **Consult a Cardiologist**: Confirm with diagnostic tests like an echocardiogram or blood work.
+                            - **Assess Risk Factors**: High cholesterol, stress, or family history may contribute.
+                            - **Lifestyle Tips**: Reduce salt intake, manage stress, and engage in regular aerobic exercise.
+                            **Possible Related Conditions**:
+                            - **Angina**: Chest pain could indicate reduced blood flow to the heart.
+                            - **Hypertension**: Elevated readings may lead to heart strain.
+                            - **Atherosclerosis**: Plaque buildup in arteries is a common cause.
+                        """)
                     else:
-                        st.success(f'The person does not have heart disease (ML prediction, Probability: {heart_prob*100:.2f}%).')
-                        st.write("Continue monitoring heart health.")
+                        st.success(f"✅ No Heart Disease Predicted (ML Model, Probability: {heart_prob*100:.2f}%)")
+                        st.write("""
+                            **Diagnosis**: The ML model suggests a low likelihood of heart disease at this time.
+                            **Next Steps**:
+                            - **Regular Monitoring**: Schedule annual checkups to track blood pressure and cholesterol.
+                            - **Preventive Measures**: Maintain a diet rich in fruits, vegetables, and omega-3s, and stay active.
+                            - **Stay Informed**: Be aware of risk factors like smoking, obesity, or diabetes that could increase future risk.
+                        """)
             except Exception as e:
                 st.error(f"An error occurred during prediction: {str(e)}")
 
@@ -446,20 +492,46 @@ if selected == 'Parkinsons Prediction':
                     abnormal_params.append("PPE")
 
                 # Use exactly 22 features for the model
-                model_input = validated_input  # No padding needed
+                model_input = validated_input
 
                 if abnormal_params:
-                    st.success(f"The person has Parkinson's disease due to abnormal {', '.join(abnormal_params)} value(s).")
-                    st.write("Abnormal voice parameters suggest Parkinson’s. Consult a neurologist.")
+                    st.success(f"⚠️ Parkinson's Disease Detected Due to Abnormal {', '.join(abnormal_params)} Value(s)")
+                    st.write("""
+                        **Diagnosis**: Abnormal voice parameters suggest a high likelihood of Parkinson's disease.
+                        **Next Steps**:
+                        - **Consult a Neurologist**: Schedule an evaluation for neurological tests or a DaTscan.
+                        - **Monitor Symptoms**: Watch for tremors, stiffness, slow movement, or balance issues.
+                        - **Lifestyle Tips**: Engage in speech therapy, physical exercise (e.g., tai chi), and maintain a nutrient-rich diet.
+                        **Possible Related Conditions**:
+                        - **Dysarthria**: Voice changes may indicate speech difficulties.
+                        - **Bradykinesia**: Slowness in movement often accompanies Parkinson’s.
+                        - **Postural Instability**: Balance issues may develop if untreated.
+                    """)
                 else:
                     # Use ML model for other parameters
                     parkinsons_prediction = parkinsons_model.predict([model_input])
                     if parkinsons_prediction[0] == 1:
-                        st.success("The person has Parkinson's disease (ML prediction).")
-                        st.write("ML model predicts Parkinson’s. Consult a neurologist.")
+                        st.success("⚠️ Parkinson's Disease Predicted (ML Model)")
+                        st.write("""
+                            **Diagnosis**: The ML model indicates a high probability of Parkinson's disease.
+                            **Next Steps**:
+                            - **Consult a Neurologist**: Confirm with clinical assessments or imaging studies.
+                            - **Track Symptoms**: Note any changes in voice, handwriting, or motor skills.
+                            - **Lifestyle Tips**: Consider physical therapy, voice exercises, and stress management techniques.
+                            **Possible Related Conditions**:
+                            - **Tremor Disorders**: Shaking may indicate early Parkinson’s or related conditions.
+                            - **Cognitive Decline**: Some cases may progress to memory or focus issues.
+                            - **Autonomic Dysfunction**: Blood pressure or digestion issues could emerge.
+                        """)
                     else:
-                        st.success("The person does not have Parkinson's disease (ML prediction).")
-                        st.write("Continue monitoring for neurological symptoms.")
+                        st.success("✅ No Parkinson's Disease Predicted (ML Model)")
+                        st.write("""
+                            **Diagnosis**: The ML model suggests a low likelihood of Parkinson's disease at this time.
+                            **Next Steps**:
+                            - **Regular Monitoring**: Periodic neurological checkups can help detect early signs.
+                            - **Preventive Measures**: Stay active with exercises that promote coordination and balance.
+                            - **Stay Informed**: Be aware of risk factors like family history or environmental exposures.
+                        """)
             except Exception as e:
                 st.error(f"An error occurred during prediction: {str(e)}")
 
